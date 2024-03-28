@@ -30,7 +30,8 @@ class MyApp: CoreApp() {
             androidContext(this@MyApp)
             modules(
                 httpClientModule,
-                templateApiModule,
+
+                dataTemplateApiModule,
 
                 featureTemplateModule,
                 featureMainModule,
