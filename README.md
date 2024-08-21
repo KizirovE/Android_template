@@ -1,3 +1,4 @@
+Собрал для себя базовую архитектуру проекта
 Android temaplate project  
 made with:  
 gradle kts  
