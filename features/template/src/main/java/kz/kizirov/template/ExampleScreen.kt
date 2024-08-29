@@ -1,6 +1,9 @@
 package kz.kizirov.template
 
 import android.os.Parcelable
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,27 +28,48 @@ class ExampleScreen : CoreBaseScreen(), Parcelable {
             //is NavigationEvent.AuthRouter -> navigator.push(ScreenRegistry.get(AuthRouter.ProfileScreen()))
         }
         SubscribeError(viewModel)
-        ExampleContent(viewModel = viewModel)
+
+        val state = viewModel.state.collectAsStateWithLifecycle().value
+        ExampleContent(
+            state = state,
+            onEvent = {
+                viewModel.sendEvent(it)
+            }
+        )
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ExampleContentPreview() {
-    ExampleContent(ExampleViewModelPreview())
+    ExampleContent(
+        state = ExampleState.Default,
+        onEvent = {
+
+        })
 }
 
 
 @Composable
-fun ExampleContent(viewModel: IExampleViewModel) {
-    val state = viewModel.state.collectAsStateWithLifecycle().value
-    when (state) {
-        is ExampleState.Default -> {
-            Text("ExampleState Default")
+fun ExampleContent(state: ExampleState, onEvent: (ExampleEvent) -> Unit) {
+    Column {
+        Row() {
+            Button(onClick = { onEvent.invoke(ExampleEvent.Add) }) {
+                Text("load")
+            }
+            Button(onClick = { onEvent.invoke(ExampleEvent.Delete) }) {
+                Text("Delete")
+            }
         }
+        when (state) {
+            is ExampleState.Default -> {
+            }
 
-        is ExampleState.Dog -> {
-            Text("ExampleState ${state.dog.toString()}")
+            is ExampleState.Dogs -> {
+                state.dog.forEach {
+                    Text(it.toString())
+                }
+            }
         }
     }
 }

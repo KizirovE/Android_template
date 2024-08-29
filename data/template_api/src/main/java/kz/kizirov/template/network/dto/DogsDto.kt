@@ -1,11 +1,11 @@
-package kz.kizirov.template.models
+package kz.kizirov.template.network
 
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DogsModel(
+data class DogsDto(
     @SerialName("message")
     val message: String? = null,
     @SerialName("status")

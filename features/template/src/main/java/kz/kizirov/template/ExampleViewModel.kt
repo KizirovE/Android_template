@@ -6,7 +6,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kz.kizirov.core.base.CoreBaseViewModel
-import kz.kizirov.template.models.DogsModel
+import kz.kizirov.domain.example.dogs_usecases.DeleteAllDogsUseCase
+import kz.kizirov.domain.example.dogs_usecases.GetAllDogsUseCase
+import kz.kizirov.domain.example.dogs_usecases.LoadDog
+import kz.kizirov.domain.example.dogs_usecases.model.DogModel
+import trikita.log.Log
 
 interface IExampleViewModel {
     val state: StateFlow<ExampleState>
@@ -16,6 +20,8 @@ interface IExampleViewModel {
 
 sealed class ExampleEvent{
     object Back: ExampleEvent()
+    object Add: ExampleEvent()
+    object Delete: ExampleEvent()
 }
 
 sealed class NavigationEvent{
@@ -32,17 +38,13 @@ sealed class NavigationEvent{
 
 sealed class ExampleState{
     object Default: ExampleState()
-    class Dog(val dog: DogsModel): ExampleState()
-}
-
-class ExampleViewModelPreview : IExampleViewModel {
-    override val state: StateFlow<ExampleState> = MutableStateFlow(ExampleState.Default).asStateFlow()
-    override val navigationEvent = MutableStateFlow(NavigationEvent.Default()).asStateFlow()
-    override fun sendEvent(event: ExampleEvent) {}
+    class Dogs(val dog: List<DogModel>): ExampleState()
 }
 
 class ExampleViewModel(
-    private val repository: TemplateApiRepository
+    private val getAllDogsUseCase: GetAllDogsUseCase,
+    private val loadDog: LoadDog,
+    private val deleteAllDogsUseCase: DeleteAllDogsUseCase
 ): CoreBaseViewModel(), IExampleViewModel {
 
     private var _state = MutableStateFlow<ExampleState>(ExampleState.Default)
@@ -54,12 +56,11 @@ class ExampleViewModel(
 
     init {
         screenModelScope.launch {
-            repository.getDog().apply {
-                if(isSuccessful){
-                    _state.value = ExampleState.Dog(body)
-                }
-                if(failed){
-                    createErrorEvent(error.toString())
+            getAllDogsUseCase().apply {
+                if(isSuccessfull){
+                    body.collect {
+                        _state.value = ExampleState.Dogs(it)
+                    }
                 }
             }
         }
@@ -69,6 +70,24 @@ class ExampleViewModel(
         when(event){
             ExampleEvent.Back -> {
                 _navigationEvent.value = NavigationEvent.Back()
+            }
+            ExampleEvent.Add -> {
+                screenModelScope.launch {
+                    loadDog().apply {
+                        if(isSuccessfull){
+                            Log.d("successBody", body)
+                        }
+                        if(isFailed){
+                            Log.d("errorBody", failed.message)
+                        }
+                    }
+                }
+            }
+
+            ExampleEvent.Delete -> {
+                screenModelScope.launch {
+                   deleteAllDogsUseCase()
+                }
             }
         }
     }

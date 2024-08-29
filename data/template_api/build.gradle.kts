@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.jetbrainsKotlinSerialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kapt)
 }
 
 android {
@@ -33,6 +35,7 @@ android {
     }
 }
 
+
 dependencies {
     implementation(project(":core:core"))
 
@@ -46,6 +49,9 @@ dependencies {
     implementation(libs.ktor.serialization)
     implementation(libs.trikita.log)
     implementation(libs.paperdb)
+    implementation(libs.room.runtime)
+    implementation(libs.room.runtime.ktx)
+    ksp(libs.room.runtime.ksp)
     implementation(libs.koin.core)
 
     testImplementation(libs.junit)

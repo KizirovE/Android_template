@@ -1,6 +1,8 @@
 package kz.kizirov.main
 
 import android.os.Parcelable
+import android.os.strictmode.UntaggedSocketViolation
+import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -28,31 +30,46 @@ class MainScreen : CoreBaseScreen(), Parcelable {
             is NavigationEvent.OpenExample -> navigator.push(ScreenRegistry.get(MainRouter.OpenExampleScreen))
         }
         SubscribeError(viewModel)
-        MainContent(viewModel = viewModel)
+        val state = viewModel.state.collectAsStateWithLifecycle().value
+        MainContent(state = state,
+            onEvent = {
+                viewModel.sendEvent(it)
+            }
+        )
     }
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun MainContentPreview() {
-    MainContent(MainViewModelPreview())
+    MainContent(MainState.Default, {})
 }
 
 
 @Composable
-fun MainContent(viewModel: IMainViewModel) {
-    val state = viewModel.state.collectAsStateWithLifecycle().value
-    when (state) {
-        is MainState.Default -> {
-            Column {
-                Text("MainState Default")
-                Button(onClick = {
-                    viewModel.sendEvent(MainEvent.OpenExample)
-                }) {
-                    Text("OpenExample")
-                }
+fun MainContent(
+    state: MainState,
+    onEvent: (MainEvent) -> Unit
+) {
+    Column {
+        Column {
+            Button(onClick = {
+                onEvent(MainEvent.OpenExample)
+            }) {
+                Text("OpenExample")
+            }
+        }
+        when (state) {
+            is MainState.Default -> {
+
+
             }
 
+            is MainState.Dogs -> {
+                state.list.forEach {
+                    Text(it.toString())
+                }
+            }
         }
     }
 }

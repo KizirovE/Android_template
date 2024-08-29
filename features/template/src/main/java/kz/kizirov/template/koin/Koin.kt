@@ -6,5 +6,5 @@ import org.koin.dsl.module
 
 //Регистрируем в MyApp
 val featureTemplateModule = module {
-    factory { ExampleViewModel(get()) }
+    factory { ExampleViewModel(get(), get(), get()) }
 }

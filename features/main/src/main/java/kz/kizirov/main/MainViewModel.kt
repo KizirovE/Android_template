@@ -1,9 +1,13 @@
 package kz.kizirov.main
 
+import cafe.adriel.voyager.core.model.screenModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import kz.kizirov.core.base.CoreBaseViewModel
+import kz.kizirov.domain.example.dogs_usecases.GetAllDogsUseCase
+import kz.kizirov.domain.example.dogs_usecases.model.DogModel
 
 interface IMainViewModel {
     val state: StateFlow<MainState>
@@ -31,15 +35,12 @@ sealed class NavigationEvent{
 
 sealed class MainState{
     object Default: MainState()
+    class Dogs(val list: List<DogModel>): MainState()
 }
 
-class MainViewModelPreview : IMainViewModel {
-    override val state: StateFlow<MainState> = MutableStateFlow(MainState.Default).asStateFlow()
-    override val navigationEvent = MutableStateFlow(NavigationEvent.Default()).asStateFlow()
-    override fun sendEvent(event: MainEvent) {}
-}
-
-class MainViewModel: CoreBaseViewModel(), IMainViewModel {
+class MainViewModel(
+    private val getAllDogsUseCase: GetAllDogsUseCase
+): CoreBaseViewModel(), IMainViewModel {
 
     private var _state = MutableStateFlow<MainState>(MainState.Default)
     override val state: StateFlow<MainState> = _state.asStateFlow()
@@ -47,6 +48,18 @@ class MainViewModel: CoreBaseViewModel(), IMainViewModel {
 
     private val _navigationEvent = MutableStateFlow<NavigationEvent>(NavigationEvent.Default())
     override val navigationEvent: StateFlow<NavigationEvent> = _navigationEvent.asStateFlow()
+
+    init {
+        screenModelScope.launch {
+            getAllDogsUseCase().apply {
+                if(isSuccessfull){
+                    body.collect {
+                        _state.value = MainState.Dogs(it)
+                    }
+                }
+            }
+        }
+    }
 
     override fun sendEvent(event: MainEvent) {
         when(event){

@@ -1,13 +1,13 @@
 package kz.kizirov.template
 
 import cafe.adriel.voyager.core.registry.ScreenRegistry
-import cafe.adriel.voyager.core.registry.screenModule
 import kz.kizirov.core.CoreApp
 import kz.kizirov.core.network.ktor.httpClientModule
 import kz.kizirov.core.storage.GlobalStorage
-import kz.kizirov.main.MainRouter
-import kz.kizirov.main.koin.featureMainModule
-import kz.kizirov.template.koin.featureTemplateModule
+import kz.kizirov.template.modules.dataModules
+import kz.kizirov.template.modules.dbModules
+import kz.kizirov.template.modules.domainModules
+import kz.kizirov.template.modules.featureModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -28,20 +28,11 @@ class MyApp: CoreApp() {
         startKoin {
             androidLogger()
             androidContext(this@MyApp)
-            modules(
-                httpClientModule,
-
-                dataTemplateApiModule,
-
-                featureTemplateModule,
-                featureMainModule,
-                )
+            modules(httpClientModule)
+            modules(dbModules)
+            modules(dataModules)
+            modules(domainModules)
+            modules(featureModules)
         }
-    }
-}
-
-val featureMain = screenModule {
-    register<MainRouter.OpenExampleScreen> {
-        ExampleScreen()
     }
 }

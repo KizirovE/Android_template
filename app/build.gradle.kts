@@ -88,12 +88,15 @@ android {
         }
     }
 }
-
+configurations{
+    implementation.get().exclude(mapOf("group" to "org.jetbrains", "module" to "annotations"))
+}
 dependencies {
     implementation(project(":core:core"))
     implementation(project(":features:main"))
     implementation(project(":features:template"))
     implementation(project(":data:template_api"))
+    implementation(project(":domain:example"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -118,6 +121,7 @@ dependencies {
     implementation(libs.koin.android)
     implementation(libs.koin.androidX.compose)
     implementation(libs.paperdb)
+    implementation(libs.room.runtime)
     implementation(libs.trikita.log)
 
     implementation(libs.ktor.core)

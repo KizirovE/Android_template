@@ -4,5 +4,5 @@ import kz.kizirov.main.MainViewModel
 import org.koin.dsl.module
 
 val featureMainModule = module {
-    factory { MainViewModel() }
+    factory { MainViewModel(get()) }
 }

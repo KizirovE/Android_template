@@ -4,25 +4,27 @@ namespace = "kz.kizirov"
 compileSdk = "34"
 minSdk = "24"
 targetSdk = "34"
-agp = "8.3.1"
+agp = "8.3.2"
 kotlin = "1.9.23"
-coreKtx = "1.12.0"
+coreKtx = "1.13.1"
 junit = "4.13.2"
-junitVersion = "1.1.5"
-espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.7.0"
-activityCompose = "1.8.2"
-composeBom = "2024.03.00"
+junitVersion = "1.2.1"
+espressoCore = "3.6.1"
+lifecycleRuntimeKtx = "2.8.4"
+activityCompose = "1.9.1"
+composeBom = "2024.08.00"
 kotlinCompilerExtensionVersion = "1.5.11"
 trikitaLog = "1.1.5"
 paperDb = "2.7.2"
 voyager = "1.0.0"
 ktor = "2.3.9"
 koin-bom = "3.5.3"
-appcompat = "1.6.1"
-material = "1.11.0"
-lifecycle = "2.7.0"
+appcompat = "1.7.1"
+material = "1.12.0"
+lifecycle = "2.8.4"
 kotlinParcelize = "kotlin-parcelize"
+room_version = "2.6.1"
+ksp_version = "1.9.23-1.0.20"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -53,6 +55,10 @@ koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koin-bom"  }
 
 # datastore#
 paperdb = { module = "io.github.pilgr:paperdb", version.ref = "paperDb" }
+room_runtime = { module = "androidx.room:room-runtime", version.ref = "room_version" }
+room-runtime-ktx = { module = "androidx.room:room-ktx", version.ref = "room_version" }
+room-runtime-ksp = { module = "androidx.room:room-compiler", version.ref = "room_version" }
+
 
 # log
 trikita-log = { module = "co.trikita:log", version.ref = "trikitaLog" }
@@ -74,4 +80,6 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 jetbrainsKotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_version" }
+kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 

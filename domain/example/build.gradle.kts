@@ -1,11 +1,13 @@
 plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    id(libs.versions.kotlinParcelize.get())
+    alias(libs.plugins.jetbrainsKotlinSerialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kapt)
 }
 
 android {
-    namespace = libs.versions.namespace.get() + ".template"
+    namespace = libs.versions.namespace.get() + ".example"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -31,37 +33,19 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
-    }
 }
+
 
 dependencies {
     implementation(project(":core:core"))
-    implementation(project(":domain:example"))
+    implementation(project(":data:template_api"))
 
     implementation(libs.androidx.core.ktx)
 
-    implementation(libs.androidx.lifecycle)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
     implementation(libs.trikita.log)
-
-    implementation(libs.voyager.navigator)
-    implementation(libs.voyager.screenmodel)
-    implementation(libs.voyager.koin)
-    implementation(libs.koin.android)
-    implementation(libs.room.runtime.ksp)
-
+    implementation(libs.koin.core)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
 }
