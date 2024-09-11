@@ -14,19 +14,31 @@ import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleStore
 import cafe.adriel.voyager.navigator.CurrentScreen
 import cafe.adriel.voyager.navigator.Navigator
 import kz.kizirov.core.base.CoreBaseActivity
-import kz.kizirov.core.navigation.ScreenLifecycleOwner
 import kz.kizirov.main.MainScreen
+import kz.kizirov.template.pincode.PinCode
+import kz.kizirov.template.pincode.PinCodeImpl
 import kz.kizirov.template.ui.theme.TemplateTheme
 import org.koin.androidx.compose.KoinAndroidContext
 import org.koin.core.annotation.KoinExperimentalAPI
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 
-class MainActivity : CoreBaseActivity() {
+class MainActivity : CoreBaseActivity(),
+        PinCode by PinCodeImpl() {
     @OptIn(KoinExperimentalAPI::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
         setContent {
+            var isShowPinCode by remember { mutableStateOf(false) }
+            registerLifecycle(this,
+                onShowPinCode = {
+                    isShowPinCode = true
+                }
+            )
+
             KoinAndroidContext() {
                 TemplateTheme {
                     // A surface container using the 'background' color from the theme
@@ -40,13 +52,27 @@ class MainActivity : CoreBaseActivity() {
                             content = { navigator ->
                                 remember(navigator.lastItem) {
                                     ScreenLifecycleStore.get(navigator.lastItem) {
-                                        ScreenLifecycleOwner()
+                                        MyScreenLifecycleOwner()
                                     }
                                 }
-                                CurrentScreen()
+
+                                if (isShowPinCode) {
+                                    ShowPinCode {
+                                        isShowPinCode = false
+                                    }
+                                } else {
+                                    CurrentScreen()
+                                }
+                            },
+                            onBackPressed = {
+                                if(isShowPinCode){
+                                    if(pinCodeBackPressed()) finish()
+                                    false
+                                }else{
+                                    true
+                                }
                             }
                         )
-
                     }
                 }
             }
