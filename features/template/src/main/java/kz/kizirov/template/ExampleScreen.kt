@@ -3,7 +3,10 @@ package kz.kizirov.template
 import android.os.Parcelable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -66,8 +69,11 @@ fun ExampleContent(state: ExampleState, onEvent: (ExampleEvent) -> Unit) {
             }
 
             is ExampleState.Dogs -> {
-                state.dog.forEach {
-                    Text(it.toString())
+                LazyColumn {
+                    items(state.dog){
+                        Text(text = it.toString())
+                        HorizontalDivider()
+                    }
                 }
             }
         }

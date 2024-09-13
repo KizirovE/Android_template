@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kz.kizirov.core.StringResource
 import kz.kizirov.core.base.CoreBaseViewModel
 import kz.kizirov.domain.example.dogs_usecases.GetAllDogsUseCase
 import kz.kizirov.domain.example.dogs_usecases.model.DogModel
@@ -35,7 +36,10 @@ sealed class NavigationEvent{
 
 sealed class MainState{
     object Default: MainState()
-    class Dogs(val list: List<DogModel>): MainState()
+    class Dogs(
+        val text: StringResource,
+        val textResId: StringResource,
+        val list: List<DogModel>): MainState()
 }
 
 class MainViewModel(
@@ -54,7 +58,11 @@ class MainViewModel(
             getAllDogsUseCase().apply {
                 if(isSuccessfull){
                     body.collect {
-                        _state.value = MainState.Dogs(it)
+                        _state.value = MainState.Dogs(
+                            StringResource.Text("StringResource.Text"),
+                            StringResource.ResId(R.string.title_main_screen),
+                            it
+                        )
                     }
                 }
             }
