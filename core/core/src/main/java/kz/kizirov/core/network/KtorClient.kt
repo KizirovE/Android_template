@@ -22,6 +22,7 @@ import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.InternalAPI
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import kz.kizirov.core.BuildConfig
 import kz.kizirov.core.CoreApp
 import kz.kizirov.core.network.models.auth.TokenModel
 import kz.kizirov.core.storage.GlobalStorage
@@ -39,10 +40,12 @@ val httpClientModule = module {
                 accept(ContentType.Application.Json)
             }
             install(Logging) {
-                level = LogLevel.ALL
-                logger = object : Logger {
-                    override fun log(message: String) {
-                        Log.i("HttpClient", message)
+                if(BuildConfig.DEBUG) {
+                    level = LogLevel.BODY
+                    logger = object : Logger {
+                        override fun log(message: String) {
+                            Log.i("HttpClient", message)
+                        }
                     }
                 }
             }

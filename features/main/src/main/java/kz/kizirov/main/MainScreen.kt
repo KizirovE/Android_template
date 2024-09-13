@@ -4,9 +4,13 @@ import android.os.Parcelable
 import android.os.strictmode.UntaggedSocketViolation
 import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.core.registry.ScreenRegistry
@@ -59,6 +63,7 @@ fun MainContent(
                 Text("OpenExample")
             }
         }
+
         when (state) {
             is MainState.Default -> {
 
@@ -66,8 +71,13 @@ fun MainContent(
             }
 
             is MainState.Dogs -> {
-                state.list.forEach {
-                    Text(it.toString())
+                Text(text = state.text.resolve())
+                Text(text = state.textResId.resolve())
+                LazyColumn {
+                    items(state.list){
+                        Text(text = it.toString())
+                        HorizontalDivider()
+                    }
                 }
             }
         }

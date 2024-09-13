@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.voyager.koin)
     implementation(libs.koin.android)
     implementation(libs.room.runtime.ksp)
+    implementation(libs.androidx.lifecycle.runtime.compose.android)
 
 
     testImplementation(libs.junit)
