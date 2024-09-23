@@ -12,15 +12,15 @@ kotlinx serialization - https://github.com/Kotlin/kotlinx.serialization
 Module arch  
 ├──app  
 ├──core  
-|  |── core  
-|  ├── views  
-|  ├── theme  
+|	|── core  
+|	├── views  
+|	├── theme  
 ├── domain  
-|   ├── domainName1  
-|   ├── domainName2  
+|	├── domainName1  
+|	├── domainName2  
 ├── data  
-|   ├── dataName1  
-|   ├── dataName2  
+|	├── dataName1  
+|	├── dataName2  
 ├── feature  
-|   ├── featureName1  
+|	├── featureName1  
 |   ├── featureName2  
