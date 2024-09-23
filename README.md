@@ -25,3 +25,5 @@ navigation - voyager https://voyager.adriel.cafe/
 ├── feature  
 │   ├── featureName1  
 │   ├── featureName2 
+
+![enter image description here](https://github.com/KizirovE/Android_template/raw/6b398059f684f140b90b018f228efeeb08671181/architecture.jpg)
