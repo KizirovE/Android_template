@@ -41,6 +41,8 @@ android {
 
 dependencies {
     implementation(project(":core:core"))
+    implementation(project(":core:theme"))
+    implementation(project(":core:views"))
     implementation(project(":domain:example"))
 
     implementation(libs.androidx.core.ktx)

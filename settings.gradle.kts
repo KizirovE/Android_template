@@ -22,9 +22,9 @@ dependencyResolutionManagement {
 rootProject.name = "Template"
 include(":app")
 include(":core:core")
+include(":core:theme")
+include(":core:views")
 include(":features:main")
 include(":features:template")
 include(":data:template_api")
-include(":core:theme")
-include(":core:views")
 include(":domain:example")
