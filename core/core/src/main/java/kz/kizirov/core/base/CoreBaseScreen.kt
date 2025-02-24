@@ -19,17 +19,17 @@ abstract class CoreBaseScreen: Screen {
 
     open fun onDispose(){}
 
+    open fun isCanCloseScreen(onCanCloseScreen:(Boolean) -> Unit){
+        onCanCloseScreen.invoke(true)
+    }
+
     @Composable
     fun SubscribeError(viewModel: CoreBaseViewModel){
         val message = viewModel.showErrorMessageEvent.collectAsStateWithLifecycle().value
-        if(!message.isNullOrEmpty()){
+        if(message != null){
             Log.e("subscribeError", message)
-            viewModel.cleareError()
+            viewModel.clearError()
         }
-    }
-
-    fun onBack(result:Any){
-        ResultNavigation.setValue(result)
     }
 
     fun getResultScreen():Any?{

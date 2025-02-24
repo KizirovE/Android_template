@@ -1,18 +1,18 @@
 [versions]
 appName = "Template"
 namespace = "kz.kizirov"
-compileSdk = "34"
+compileSdk = "35"
 minSdk = "24"
-targetSdk = "34"
+targetSdk = "35"
 agp = "8.6.0"
-kotlin = "1.9.23"
-coreKtx = "1.13.1"
+kotlin = "2.1.10"
+coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.5"
-activityCompose = "1.9.2"
-composeBom = "2024.09.01"
+lifecycleRuntimeKtx = "2.8.7"
+activityCompose = "1.10.0"
+composeBom = "2025.02.00"
 kotlinCompilerExtensionVersion = "1.5.11"
 trikitaLog = "1.1.5"
 paperDb = "2.7.2"
@@ -21,11 +21,11 @@ ktor = "2.3.9"
 koin-bom = "3.5.3"
 appcompat = "1.7.1"
 material = "1.12.0"
-lifecycle = "2.8.5"
+lifecycle = "2.8.7"
 kotlinParcelize = "kotlin-parcelize"
 room_version = "2.6.1"
-ksp_version = "1.9.23-1.0.20"
-lifecycleRuntimeComposeAndroid = "2.8.5"
+ksp_version = "2.1.10-1.0.29"
+lifecycleRuntimeComposeAndroid = "2.8.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -84,4 +84,5 @@ jetbrainsKotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp_version" }
 kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 

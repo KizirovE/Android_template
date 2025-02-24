@@ -2,8 +2,10 @@ package kz.kizirov.main
 
 import android.os.Parcelable
 import android.os.strictmode.UntaggedSocketViolation
+import android.widget.Toast
 import androidx.compose.animation.expandVertically
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -18,6 +20,8 @@ import cafe.adriel.voyager.koin.getScreenModel
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import kotlinx.parcelize.Parcelize
+import kz.alseco.theme.kit.Text_16
+import kz.alseco.theme.kit.UiKitButton
 import kz.kizirov.core.base.CoreBaseScreen
 
 @Parcelize
@@ -26,12 +30,13 @@ class MainScreen : CoreBaseScreen(), Parcelable {
     @Composable
     override fun Content() {
         val viewModel = getScreenModel<MainViewModel>()
-        val navigator = LocalNavigator.currentOrThrow
-        val navigationEvent = viewModel.navigationEvent.collectAsStateWithLifecycle().value.getValue()
-        when(navigationEvent){
-            is NavigationEvent.Default -> {}
-            is NavigationEvent.Back -> navigator.pop()
-            is NavigationEvent.OpenExample -> navigator.push(ScreenRegistry.get(MainRouter.OpenExampleScreen))
+        val context = LocalContext.current
+        val action = viewModel.action.collectAsStateWithLifecycle().value.getValue()
+        when(action){
+            is MainAction.Default -> {}
+            is MainAction.ShowToast -> {
+                Toast.makeText(context, action.text.resolve(), Toast.LENGTH_SHORT).show()
+            }
         }
         SubscribeError(viewModel)
         val state = viewModel.state.collectAsStateWithLifecycle().value
@@ -56,12 +61,15 @@ fun MainContent(
     onEvent: (MainEvent) -> Unit
 ) {
     Column {
-        Column {
-            Button(onClick = {
+        Row  {
+            UiKitButton(
+                text = "OpenExample", onClick = {
                 onEvent(MainEvent.OpenExample)
-            }) {
-                Text("OpenExample")
-            }
+            })
+            UiKitButton(
+                text = "ShowToast", onClick = {
+                onEvent(MainEvent.ShowToast)
+            })
         }
 
         when (state) {
@@ -71,8 +79,8 @@ fun MainContent(
             }
 
             is MainState.Dogs -> {
-                Text(text = state.text.resolve())
-                Text(text = state.textResId.resolve())
+                Text_16(text = state.text.resolve())
+                Text_16(text = state.textResId.resolve())
                 LazyColumn {
                     items(state.list){
                         Text(text = it.toString())

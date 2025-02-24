@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id(libs.versions.kotlinParcelize.get())
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -34,13 +35,12 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
-    }
 }
 
 dependencies {
     implementation(project(":core:core"))
+    implementation(project(":core:theme"))
+    implementation(project(":core:views"))
     implementation(project(":domain:example"))
 
     implementation(libs.androidx.core.ktx)

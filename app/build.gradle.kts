@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.jetbrainsKotlinSerialization)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -42,9 +43,6 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
     }
     packaging {
         resources {
@@ -93,6 +91,8 @@ configurations{
 }
 dependencies {
     implementation(project(":core:core"))
+    implementation(project(":core:theme"))
+    implementation(project(":core:views"))
     implementation(project(":features:main"))
     implementation(project(":features:template"))
     implementation(project(":data:template_api"))

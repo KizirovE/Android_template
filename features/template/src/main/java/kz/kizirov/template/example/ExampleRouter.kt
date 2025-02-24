@@ -1,4 +1,4 @@
-package kz.kizirov.template
+package kz.kizirov.template.example
 
 import cafe.adriel.voyager.core.registry.ScreenProvider
 

@@ -2,11 +2,13 @@ package kz.kizirov.core.network
 
 import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.request
 import kz.kizirov.core.network.models.ErrorModel
 
 
 data class KtorResponse<T>(
     private val status: Status,
+    val url: String?,
     private val _body: T?,
     val error: ErrorModel? = null,
 ){
@@ -17,32 +19,36 @@ data class KtorResponse<T>(
                 status = Status.Success,
                 _body = data.body<T>(),
                 error = null,
+                url = data.request.url.toString(),
             )
         }
 
-        fun <T> failure(exception: Exception): KtorResponse<T> {
+        fun <T> failure(code: Int, url:String, exception: Exception): KtorResponse<T> {
             return KtorResponse(
                 status = Status.Failure,
                 _body = null,
-                error = generateErrorModel(exception),
+                error = generateErrorModel(code, url, exception),
+                url = url
             )
         }
         suspend inline fun <reified T> failure(data: HttpResponse): KtorResponse<T> {
             return KtorResponse(
                 status = Status.Failure,
                 _body = null,
-                error = data.body<ErrorModel>(),
+                error = data.body<ErrorModel>().copy(url = data.request.url.toString()),
+                url = data.request.url.toString()
             )
         }
 
-        private fun generateErrorModel(exception: Exception): ErrorModel {
-            return createErrorModel(0, exception.toString())
+        private fun generateErrorModel(code: Int, url: String, exception: Exception): ErrorModel {
+            return createErrorModel(code, exception.toString(), url)
         }
 
-        private fun createErrorModel(statusCode: Int = 0, customMessage: String? = ""): ErrorModel {
+        private fun createErrorModel(code: Int = 0, customMessage: String, url: String): ErrorModel {
             return ErrorModel(
-                status = statusCode,
+                code = code,
                 message = null,
+                url = url,
                 customMessage = customMessage?: ""
             )
         }
