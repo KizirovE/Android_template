@@ -9,7 +9,7 @@ import androidx.core.os.ConfigurationCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import kz.kizirov.template.ui.theme.TemplateTheme
+import kz.alseco.theme.AppTheme
 
 class PinCodeImpl: PinCode, LifecycleEventObserver {
 
@@ -33,7 +33,7 @@ class PinCodeImpl: PinCode, LifecycleEventObserver {
 
     @Composable
     override fun ShowPinCode(onEnterPinCode: () -> Unit){
-        TemplateTheme {
+        AppTheme  {
             Column {
                 Button(onClick = { onEnterPinCode.invoke() }) {
                     Text(text = "pinCodeEnter")

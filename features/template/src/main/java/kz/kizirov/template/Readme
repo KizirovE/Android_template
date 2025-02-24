@@ -1,0 +1,86 @@
+
+
+Нейминг
+Автозаменой меняем Example на нужное название подходящее по смыслу
+
+Иеархия папок
+-пакет - kz.kizirov.tempate
+содержит --koin.kt
+         --example - каталог экрана
+каталог экрана содержат:
+ExampleRouter - если надо навигироваться в другой feature модуль
+ExampleScreen - сам экран
+ExampleViewModel - view model
+Подкаталог ui если хотим вынести часть compose fun из ExampleScreen в отдельные файлы, например для удобного preview
+
+viewModel cостоит из:
+
+1. Описывает интерфейс ViewMode по MVI
+(вход данных: SendEvent,
+выход данных: State - состояние экрана, Action- Единичное событие (например показать Toast))
+interface IExampleViewModel {
+    val state: StateFlow<ExampleState>
+    val action: StateFlow<ExampleActions?>
+    fun sendEvent(event: ExampleEvent)
+}
+
+2. описываются входящие события
+sealed class ExampleEvent {
+    object ShowToast: ExampleEvent() //без параметров
+    data class ShowToast(val text: String): ExampleEvent() //с параметрами
+}
+
+3. выходящие события
+sealed class ExampleActions{
+    private var handled: Boolean = false
+
+    fun getValue(): ExampleActions? {
+        if (handled) return null
+        handled = true
+        return this
+    }
+    class ShowToast(val text: StringResource): ExampleActions() //всегда class, никогда object и data class
+}
+//бонус StringResource используется для передачи строк из viewModel.
+//пример:
+//StringResource.ResId(R.string.toast)
+//StringResource.Text("текст, например пришелдищй с сервера")
+
+4. стейт экрана
+sealed class ExampleState{
+    object Default: ExampleState()
+    class Dogs(val dog: List<DogModel>): ExampleState()
+    class Error(val dog: List<DogModel>): ExampleState()
+}
+
+У сложных экранов может быть
+data class MeterState(
+    val list: List<String>,
+    val isLoading: Boolean,
+    val isError: Boolean,
+)
+
+_state.update{ it.copy( isLoading = true ) }
+
+5. Сама ViewModel
+class ExampleViewModel(
+    private val useCase: UseCase, //Если используем юзкейсы
+    private val repository: Repository //если логика простая и юзкейсы не юзаем и ходим сразу в бд/сеть
+    private val navigation: INavigation //для навигации из вью модели
+): CoreBaseViewModel(), IExampleViewModel {
+
+    private var _state = MutableStateFlow<ExampleState>(ExampleState.Default)
+    override val state: StateFlow<ExampleState> = _state.asStateFlow()
+
+    private val _action = MutableStateFlow<ExampleActions?>(null)
+    override val action: StateFlow<ExampleActions?> = _action.asStateFlow()
+
+    override fun sendEvent(event: ExampleEvent) {
+            when(event){
+                ExampleEvent.Back -> {
+                    _state.value = ExampleState.Default
+                    navigation.pop()
+                }
+            }
+    }
+}

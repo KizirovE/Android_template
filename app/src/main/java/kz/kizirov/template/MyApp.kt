@@ -2,6 +2,7 @@ package kz.kizirov.template
 
 import cafe.adriel.voyager.core.registry.ScreenRegistry
 import kz.kizirov.core.CoreApp
+import kz.kizirov.core.navigation.navigationModule
 import kz.kizirov.core.network.ktor.httpClientModule
 import kz.kizirov.core.storage.GlobalStorage
 import kz.kizirov.template.modules.dataModules
@@ -29,6 +30,7 @@ class MyApp: CoreApp() {
             androidLogger()
             androidContext(this@MyApp)
             modules(httpClientModule)
+            modules(navigationModule)
             modules(dbModules)
             modules(dataModules)
             modules(domainModules)

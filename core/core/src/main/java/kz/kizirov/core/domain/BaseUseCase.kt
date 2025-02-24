@@ -8,7 +8,7 @@ open class BaseUseCase() {
         val r = response.invoke()
         return ResultUC<E>(
             if(r.isSuccessful) toMap(r.body) else null,
-            if(r.failed) ResultUC.Failed(r.error?.message?:"") else null
+            if(r.failed) ResultUC.Failed(r.error?.user_msg?:"") else null
         )
     }
 }
