@@ -1,10 +1,9 @@
-package kz.alseco.views.alert
+package kz.kizirov.theme.kit.alert
 
 import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Insets
-import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Handler
@@ -13,7 +12,6 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowInsets
-import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import androidx.compose.ui.graphics.toArgb
 import androidx.core.content.ContextCompat
@@ -23,10 +21,7 @@ import kz.alseco.theme.colorGreen
 import kz.alseco.theme.colorRed
 import kz.alseco.theme.colorTextPrimary
 import kz.alseco.theme.colorWhite
-import kz.alseco.theme.px
 import kz.kizirov.theme.R
-import trikita.log.Log
-
 
 
 class Alert(private var context: Context) : View.OnClickListener, LifecycleObserver {
@@ -238,3 +233,11 @@ class Alert(private var context: Context) : View.OnClickListener, LifecycleObser
     }
 
 }
+
+val Int.px: Int
+    get() {
+        // Получаем текущую "плотность" (density) экрана.
+        val density = Resources.getSystem().displayMetrics.density
+        // Умножаем значение (this) на плотность, чтобы получить пиксели.
+        return (this * density).toInt()
+    }

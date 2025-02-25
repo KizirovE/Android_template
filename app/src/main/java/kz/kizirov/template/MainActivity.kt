@@ -23,16 +23,27 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import kz.alseco.core.base.AlertType
 import kz.alseco.theme.AppTheme
 import kz.alseco.theme.colorBackground
 import kz.kizirov.core.navigation.INavigation
 import kz.kizirov.template.start_screen.StartScreen
 import kz.kizirov.template.start_screen.StartScreenImpl
+import kz.kizirov.theme.kit.alert.Alert
 import org.koin.android.ext.android.get
 
 class MainActivity : CoreBaseActivity(),
     PinCode by PinCodeImpl(),
     StartScreen by StartScreenImpl() {
+
+    override fun showAlert(type: AlertType, message: String) {
+        when(type){
+            AlertType.ERROR -> Alert.with(this).setMessage(message).sneakError()
+            AlertType.INFO -> Alert.with(this).setMessage(message).sneakInfo()
+            AlertType.SUCCESS -> Alert.with(this).setMessage(message).sneakSuccess()
+        }
+    }
+
     @OptIn(KoinExperimentalAPI::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

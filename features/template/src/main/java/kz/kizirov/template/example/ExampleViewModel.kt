@@ -26,6 +26,7 @@ sealed class ExampleEvent{
     object Add: ExampleEvent()
     object Delete: ExampleEvent()
     object ShowToast: ExampleEvent()
+    object ShowAlert: ExampleEvent()
 
     //ОПЦИОНАЛЬНО, для случаев редактирования формы и хотим спросить "НЕсохраненые изменения будут потеряны. ДА/НЕТ
     //Проверяем можно ли закрыть экран
@@ -43,6 +44,7 @@ sealed class ExampleActions{
         return this
     }
     class ShowToast(val text: StringResource): ExampleActions()
+    class ShowAlert(val text: StringResource): ExampleActions()
 
     //ОПЦИОНАЛЬНО, для случаев редактирования формы и хотим спросить "НЕсохраненые изменения будут потеряны. ДА/НЕТ
     class ShowCantCloseScreen: ExampleActions()
@@ -123,6 +125,10 @@ class ExampleViewModel(
             ExampleEvent.CanCloseScreen -> {
                 //Дергается когда пользователь нажал ДА в диалоге
                 onCanCloseScreen.invoke(true)
+            }
+
+            ExampleEvent.ShowAlert -> {
+                _action.value = ExampleActions.ShowAlert(StringResource.Text("Alert Example"))
             }
         }
     }
