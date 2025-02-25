@@ -41,6 +41,8 @@ android {
 
 dependencies {
 
+    implementation(project(":core:theme"))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle)
     testImplementation(libs.junit)

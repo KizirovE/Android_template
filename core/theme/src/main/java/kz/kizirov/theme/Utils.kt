@@ -15,11 +15,3 @@ fun isTablet(): Boolean  {
     }
     return false
 }
-
-val Int.px: Int
-    get() {
-        // Получаем текущую "плотность" (density) экрана.
-        val density = Resources.getSystem().displayMetrics.density
-        // Умножаем значение (this) на плотность, чтобы получить пиксели.
-        return (this * density).toInt()
-    }

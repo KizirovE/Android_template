@@ -1,4 +1,4 @@
-package kz.alseco.views.alert
+package kz.kizirov.theme.kit.alert
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import kz.alseco.theme.px
 
 class AlertView(context: Context?) : LinearLayout(context) {
     init {

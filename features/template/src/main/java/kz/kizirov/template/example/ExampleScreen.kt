@@ -16,9 +16,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.koin.getScreenModel
 import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
+import kz.alseco.core.base.AlertType
 import kz.alseco.theme.kit.UiKitButton
 import kz.alseco.theme.kit.UiKitButtonOutline
 import kz.kizirov.core.base.CoreBaseScreen
+import kz.kizirov.core.getActivity
 
 @Parcelize
 class ExampleScreen : CoreBaseScreen(), Parcelable {
@@ -47,6 +49,9 @@ class ExampleScreen : CoreBaseScreen(), Parcelable {
                 viewModel.sendEvent(ExampleEvent.CanCloseScreen)
                 //Если нет, то ничего не делаем и остаемся на экране
             }
+
+            is ExampleActions.ShowAlert ->
+                context.getActivity()?.showAlert(AlertType.SUCCESS, action.text.resolve())
         }
         SubscribeError(viewModel)
 
@@ -83,6 +88,9 @@ fun ExampleContent(state: ExampleState, onEvent: (ExampleEvent) -> Unit) {
             )
             UiKitButtonOutline(
                 text = "ShowToast", onClick = { onEvent.invoke(ExampleEvent.ShowToast) }
+            )
+            UiKitButtonOutline(
+                text = "ShowAlert", onClick = { onEvent.invoke(ExampleEvent.ShowAlert) }
             )
         }
         when (state) {
